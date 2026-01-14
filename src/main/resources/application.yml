@@ -1,0 +1,9 @@
+#spring에서 apllication.properties 또는 application.yml은 환경설정파일
+#yml형식은 계층구조를 가진 가독성 좋은 형식
+server:
+  port: 8081
+  name: abc
+  time: utc
+#server.port=8081
+#server.name=abc
+#server.time=utc
