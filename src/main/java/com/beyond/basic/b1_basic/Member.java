@@ -1,10 +1,9 @@
 package com.beyond.basic.b1_basic;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Getter
+//@Data : @Getter + @Setter + @ToString
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Member {

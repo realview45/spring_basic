@@ -4,9 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 //Controller 어노테이션을 통해 스프링에 의해 객체가 생성되고, 관리되어 개발자가 직접 객체를 생성할 필요없음.
 //Controller 어노테이션과 url매핑을 통해 사용자의 요청이 메서드로 분기처리
@@ -57,4 +55,58 @@ public class MemberController {
         model.addAttribute("email", "hongildong@naver.com");
         return "dynamic_html";
     }
+
+    //    get요청의 url의 데이터 추출방식 : pathvariable, 쿼리파라미터
+//    case1. pathvariable방식을 통해 사용자로부터 url에서 데이터 추출
+//    데이터의 형식 : /memeber/path/1
+    @GetMapping("/path/{inputId}")
+    @ResponseBody              //Spring에서 형변환해줌 WrapperClass쓴이유 null로 사용하려고구리
+    public String path(@PathVariable Long inputId){
+//        별도의 형변환 없이도, 원하는 자료형으로 형변환되어 매개변수로 주입. (매개변수의 변수명이 url의 변수명과 일치해야함)
+        System.out.println(inputId);
+        return "ok";//http문서로 사용자한테 가구리
+    }
+
+//    case2.parameter방식을 통한 url에서의 데이터 추출(주로, 검색, 정렬 요청등의 상황에서 사용)
+//    case2-1)1개의 파라미터에서 데이터 추출
+//    데이터형식 : member/param1?name=hongildong
+    @GetMapping("/param1")
+    @ResponseBody
+    public String param1(@RequestParam(value = "name")String inputName) {
+        System.out.println(inputName);
+        return "OK";
+    }
+
+
+    //    case2-2)2개의 파라미터에서 데이터 추출
+//    데이터형식 : member/param1?name=hongildong&email=hong@naver.com
+    @GetMapping("/param2")
+    @ResponseBody
+    public String param2(@RequestParam(value = "name")String inputName,
+                         @RequestParam(value = "email")String inputEmail) {
+        System.out.println(inputName);
+        System.out.println(inputEmail);
+        return "OK";
+    }
+    //    case2-3)파라미터의 개수가 많아질경우, ModelAttribute를 통한 데이터바인딩
+//    데이터바인딩은 param의 데이터를모아 객체로 자동 매핑 및 생성
+//    데이터형식 : member/param1?name=hongildong&email=hong@naver.com
+    @GetMapping("/param3")
+    @ResponseBody       //객체까지 만들어주구리
+//    @ModelAttribute는 생략가능
+    public String param3(@ModelAttribute Member member) {
+        System.out.println(member);
+        return "OK";
+    }
+//    post요청 처리 case : urlencoded, multipart-formdata
+//    case1. body의 content-type이 urlencoded형식
+//    형식 : body부에 name=hongildong&email=hong@naver.com
+    @PostMapping("/url-encoded")
+    @ResponseBody
+//    형식이 url의 파라미터방식과 동일하므로, RequestParam 또는 데이터바인딩 가능
+    public String urlEncoded(@ModelAttribute Member member){
+        System.out.println(member);
+        return "ok";
+    }
+
 }
