@@ -3,6 +3,7 @@ package com.beyond.basic.b1_basic;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,11 +34,27 @@ public class MemberController {
         return m1;
     }
 //    case3. 서버가 사용자에게 html return (잘안씀 rest api를 지향)
+//    case3-1)정적인 html return
     @GetMapping("/html")
 //    ResponseBody가 없고,
 //    return타입이 String인 경우, 스프링은 templates폴더 밑에 simple_html.html을 찾아서 리턴.
 //    타임리프 의존성이 필요.
     public String htmlReturn(){
         return "simple_html";
+    }
+
+
+    //    case3. 서버가 사용자에게 html return (잘안씀 rest api를 지향)
+//    case3-2)서버에서 화면+데이터를 함께 주는 동적인화면
+//    현재 이 방식은 ssr(서버사이드렌더링). csr방식은 화면은 별도제공하고, 서버는 데이터만 제공.
+    @GetMapping("/html/dynamic")
+//    get요청의 url의 데이터 추출방식 : pathvariable, 쿼리파라미터
+//    post요청의 처리case : urlencoded, multipart-formdata, json
+    public String dynamicHtmlReturn(Model model){
+        // model객체는 데이터를 화면에 전달해주는 역할
+        // name=hongildong형태로 화면에 전달
+        model.addAttribute("name", "hongildong");
+        model.addAttribute("email", "hongildong@naver.com");
+        return "dynamic_html";
     }
 }
