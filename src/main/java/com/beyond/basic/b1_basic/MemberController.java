@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 //Controller 어노테이션을 통해 스프링에 의해 객체가 생성되고, 관리되어 개발자가 직접 객체를 생성할 필요없음.
 //Controller 어노테이션과 url매핑을 통해 사용자의 요청이 메서드로 분기처리
@@ -104,9 +107,43 @@ public class MemberController {
     @PostMapping("/url-encoded")
     @ResponseBody
 //    형식이 url의 파라미터방식과 동일하므로, RequestParam 또는 데이터바인딩 가능
-    public String urlEncoded(@ModelAttribute Member member){
+    public String urlEncoded(@ModelAttribute Member member){ //,@RequestParam 3개값
         System.out.println(member);
         return "ok";
     }
+    //    case2. body의 content-type이 multipart-formdata형식
+//    case2-1)1개의 이미지만 있는 경우
+//    형식 : body부에 name=hongildong&email=hong@naver.com&profileImage=XXXX
+    @PostMapping("/multipart-formdata")
+    @ResponseBody
+//    형식이 url의 파라미터방식과 동일하므로, RequestParam 또는 데이터바인딩 가능
+    public String multipartFormdata(@ModelAttribute Member member,
+                                    @RequestParam(value="profileImage") MultipartFile profileImage){ //,@RequestParam 3개값
+        System.out.println(member);
+        System.out.println(profileImage.getOriginalFilename());//바이너리파일을 s3로 올릴거구리
+        return "ok";
+    }
 
+    //    case2-2)여러개의 이미지가 있는 경우
+    @PostMapping("/multipart-formdata-images")
+    @ResponseBody
+//    형식이 url의 파라미터방식과 동일하므로, RequestParam 또는 데이터바인딩 가능
+    public String multipartFormdataImages(@ModelAttribute Member member,
+                                    @RequestParam(value="profileImages") List<MultipartFile> profileImages){ //,@RequestParam 3개값
+        System.out.println(member);
+        System.out.println(profileImages.size());//바이너리파일을 s3로 올릴거구리
+        return "ok";
+    }
+//    case3.body의 content-type이 json인 경우
+//    case3-1)일반적인 json데이터 처리
+//    형식 : {"name":"hongildong", "email":"hong@naver.com"}
+    @PostMapping("/json")
+    @ResponseBody
+//    RequestBody : json데이터를 객체로 파싱
+    public String jsonData(@RequestBody Member member){
+        System.out.println(member);
+        return "ok";
+    }
 }
+
+
