@@ -1,6 +1,7 @@
 package com.beyond.basic.b1_basic;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -142,6 +143,40 @@ public class MemberController {
 //    RequestBody : json데이터를 객체로 파싱
     public String jsonData(@RequestBody Member member){
         System.out.println(member);
+        return "ok";
+    }
+
+//    case3-2)배열형식의 json데이터 처리
+//    형식 : [{"name":"hongildong", "email":"hong1@naver.com"},{"name":"hongildong", "email":"hong2@naver.com"},{"name":"hongildong", "email":"hong3@naver.com"}]
+    @PostMapping("/json-list")
+    @ResponseBody
+//    RequestBody : json데이터를 객체로 파싱
+    public String jsonList(@RequestBody List<Member> memberList) throws JsonProcessingException {
+        System.out.println(memberList);
+        return "ok";
+    }
+
+//    case3-3)중첩된 json 데이터 처리(실습)
+//    데이터형식 : {"name":"hongildong", "email":"hong1@naver.com",
+//                  "scores":[{"subject":"math", "point":100},
+//                  {"subject":"english", "point":90}, {"subject":"korean", "point":100}]}
+    @PostMapping("/json-nested")
+    @ResponseBody
+    public String jsonNested(@RequestBody Student student){
+        System.out.println(student);
+        return "ok";
+    }
+
+    //    case3-4)json+file이 함께있는 데이터처리
+//    데이터형식 : member={"name:"xx", "email":"yy"}&profileImage=바이너리
+//    결론은 multipart-formdata구조안에 json을 넣는 방식.
+    @PostMapping("/json-file")
+    @ResponseBody
+//    json과 file을 함께처리해야할때는 일반적으로 RequestPart사용
+    public String jsonFile(@RequestPart("member") Member member,
+                           @RequestPart("profileImage") MultipartFile profileImage){
+        System.out.println(member);
+        System.out.println(profileImage.getOriginalFilename());
         return "ok";
     }
 }
