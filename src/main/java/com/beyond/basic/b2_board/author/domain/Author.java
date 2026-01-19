@@ -1,13 +1,12 @@
 package com.beyond.basic.b2_board.author.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 //저자(Author)엔티티 도메인 -name, email, password
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter @ToString
+@Builder
 public class Author {
     private Long id;
     private String name;

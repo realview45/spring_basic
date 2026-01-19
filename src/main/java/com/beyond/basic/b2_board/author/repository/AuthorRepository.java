@@ -18,7 +18,7 @@ public class AuthorRepository {
 //        insert into author(name, email, password) values(author.getName(), author.getEmail(), author.getPasswaord())
         this.authorList.add(author);
 //        jpa야 author줄테니까 알아서 insert 따라서 원형이 있어야함
-        author.setId(staticId++);
+//        author.setId(staticId++);
     }
     public List<Author>findAll(){
         return this.authorList;
