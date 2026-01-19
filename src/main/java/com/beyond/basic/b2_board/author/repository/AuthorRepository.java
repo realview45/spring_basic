@@ -1,11 +1,14 @@
 package com.beyond.basic.b2_board.author.repository;
 import com.beyond.basic.b2_board.author.domain.Author;
+import org.springframework.stereotype.Repository;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 //회원가입 : name, email, password
 //회원상세조회 : id, name, email, password 엔티티
 //회원목록조회 : id, name, email DTO
+@Repository//서버가 실행되는 시점에 객체를 만들어줌
 public class AuthorRepository {
     private List<Author> authorList = new ArrayList<>();
     private static Long staticId =1L;

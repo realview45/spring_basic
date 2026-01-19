@@ -5,6 +5,7 @@ import com.beyond.basic.b2_board.author.dtos.AuthorCreateDto;
 import com.beyond.basic.b2_board.author.dtos.AuthorDetailDto;
 import com.beyond.basic.b2_board.author.dtos.AuthorListDto;
 import com.beyond.basic.b2_board.author.service.AuthorService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,10 +26,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/author")
 public class AuthorController {
+    @Autowired
     private AuthorService authorService;
-    public AuthorController(){
-        authorService = new AuthorService();
-    }
+//    public AuthorController(){
+//        authorService ';= new AuthorService();
+//    }
     @PostMapping("/create")
     public String create(@RequestBody AuthorCreateDto dto){
         authorService.save(dto);

@@ -14,11 +14,11 @@ public class ViewController {
     }
     @GetMapping("/multipart-formdata-image")
     public String multiPartFormDataImage(){
-        return "2-mutlipart-formdata-image";
+        return "2-multipart-formdata-image";
     }
     @GetMapping("/multipart-formdata-images")
     public String multiPartFormDataImages(){
-        return "2-mutlipart-formdata-images";
+        return "2-multipart-formdata-images";
     }
     @GetMapping("/json")
     public String jsonView(){
