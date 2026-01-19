@@ -9,7 +9,7 @@ import java.util.Optional;
 //회원상세조회 : id, name, email, password 엔티티
 //회원목록조회 : id, name, email DTO
 @Repository//서버가 실행되는 시점에 객체를 만들어줌
-public class AuthorRepository {
+public class AuthorMemoryRepository {
     private List<Author> authorList = new ArrayList<>();
     private static Long staticId =1L;
 

@@ -4,15 +4,15 @@ import com.beyond.basic.b2_board.author.domain.Author;
 import com.beyond.basic.b2_board.author.dtos.AuthorCreateDto;
 import com.beyond.basic.b2_board.author.dtos.AuthorDetailDto;
 import com.beyond.basic.b2_board.author.dtos.AuthorListDto;
-import com.beyond.basic.b2_board.author.repository.AuthorRepository;
-import lombok.RequiredArgsConstructor;
+import com.beyond.basic.b2_board.author.repository.AuthorMemoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 //Component어노테이션을 통해 싱글통(단하나의)객체가 생성되고, 스프링에 의해 스프링컨텍스트에서 관리
 @Service
 //3반드시 초기화되어야하는필드(final변수 등)를 대상으로 생성자를 자동생성
@@ -24,11 +24,11 @@ public class AuthorService {
 //    장점1)final을 통해 상수로 사용가능(안정성향상) new가 안됨 1은 초기화못함
 //    장점2)다형성 구현가능(interface사용가능) 1은 자식중에 누구넣을지 모르기때문
 //    장점3)순환참조방지(컴파일타임에 에러check)이건 123다된다
-    private final AuthorRepository authorRepository;
+    private final AuthorMemoryRepository authorMemoryRepository;
 //    생성자가 하나밖에 없을때에는 Autowired생략가능 내가 짤때는 붙여주는게 성능이 좋다라고 알려짐
     @Autowired
-    public AuthorService(AuthorRepository authorRepository){
-        this.authorRepository = authorRepository;
+    public AuthorService(AuthorMemoryRepository authorMemoryRepository){
+        this.authorMemoryRepository = authorMemoryRepository;
     }
 //    public AuthorService(){
 //        this.authorRepository = new AuthorRepository();
@@ -52,18 +52,21 @@ public class AuthorService {
 //                .build();
 //        방법2. toEntity, fromEntity 패턴을 통한 객체 조립
 //        객체조립이라는 반복적인 작업을 별도의 코드로 떼어내 공통화
-        authorRepository.save(dto.toEntity());
+        authorMemoryRepository.save(dto.toEntity());
     }
     public List<AuthorListDto> findAll(){
-        List<Author> authorList = authorRepository.findAll();
-        List<AuthorListDto> dtoList = new ArrayList<>();
-        for(Author a : authorList){
-            dtoList.add(new AuthorListDto(a.getId(),a.getName(),a.getEmail()));
-        }
-        return dtoList;
+        return authorMemoryRepository.findAll().stream()
+                .map(a->AuthorListDto.fromEntity(a))
+                .collect(Collectors.toList());//리스트로 바꿔준다.
+//        List<Author> authorList = authorRepository.findAll();
+//        List<AuthorListDto> dtoList = new ArrayList<>();
+//        for(Author a : authorList){
+//            dtoList.add(new AuthorListDto(a.getId(),a.getName(),a.getEmail()));
+//        }
+//        return dtoList;
     }
     public AuthorDetailDto findById(Long id){
-        Optional<Author> optAuthor = authorRepository.findById(id);
+        Optional<Author> optAuthor = authorMemoryRepository.findById(id);
                                                     //entitynotfound jpa구리
         Author author = optAuthor.orElseThrow(()->new NoSuchElementException("entity is not found"));
         //dto조립
