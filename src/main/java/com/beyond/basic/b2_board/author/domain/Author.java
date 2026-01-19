@@ -6,6 +6,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter @ToString
+//빌더패턴은 AllArgs생성자 기반으로 동작한다.
 @Builder
 public class Author {
     private Long id;

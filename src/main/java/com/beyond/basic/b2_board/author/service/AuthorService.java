@@ -41,15 +41,18 @@ public class AuthorService {
 
     public void save(AuthorCreateDto dto){
 //        방법1. 객체 직접 조립
+//        1-1)생성자만을 활용한 객체 조립
 //        Author author = new Author(null, dto.getName(), dto.getEmail(), dto.getPassword());
-//        방법2. Builder패턴을 활용해 객체 조립(표준)
+//        1-2)Builder패턴을 활용한 객체 조립(표준)
 //        장점 : 1)매개변수 개수의 유연성 2)매개변수 순서의 유연성
-        Author author = Author.builder()
-                .email(dto.getEmail())
-                .name(dto.getName())
-                .password(dto.getPassword())
-                .build();
-        authorRepository.save(author);
+//        Author author = Author.builder()
+//                .email(dto.getEmail())
+//                .name(dto.getName())
+//                .password(dto.getPassword())
+//                .build();
+//        방법2. toEntity, fromEntity 패턴을 통한 객체 조립
+//        객체조립이라는 반복적인 작업을 별도의 코드로 떼어내 공통화
+        authorRepository.save(dto.toEntity());
     }
     public List<AuthorListDto> findAll(){
         List<Author> authorList = authorRepository.findAll();
@@ -63,8 +66,15 @@ public class AuthorService {
         Optional<Author> optAuthor = authorRepository.findById(id);
                                                     //entitynotfound jpa구리
         Author author = optAuthor.orElseThrow(()->new NoSuchElementException("entity is not found"));
-        //        dto조립
-        AuthorDetailDto dto = new AuthorDetailDto(author.getId(), author.getName(), author.getEmail(), author.getPassword());
-        return dto;
+        //dto조립
+//        fromEntity는 아직 dto객체가 만들어지지 않은 상태이므로 static메서드로 설계
+//        Author객체에 만들어버리면 확장성이 떨어진다 기반이 Author뿐만이아닐수있기때문구리!
+//        AuthorDetailDto dto = AuthorDetailDto.builder()
+//                .id(author.getId())
+//                .name(author.getName())
+//                .email(author.getEmail())
+//                .password(author.getPassword())
+//                .build();
+        return AuthorDetailDto.fromEntity(author);
     }
 }
