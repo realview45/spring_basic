@@ -83,7 +83,6 @@ public class AuthorJdbcRepository {
     }
     public void delete(Long id){
         try {
-            //jdbc 특징 raw query(노가다)를 직접한다구리 1
             Connection connection = dataSource.getConnection();
             String sql = "delete from author where id = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
