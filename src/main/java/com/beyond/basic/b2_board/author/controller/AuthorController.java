@@ -6,6 +6,7 @@ import com.beyond.basic.b2_board.author.dtos.AuthorDetailDto;
 import com.beyond.basic.b2_board.author.dtos.AuthorListDto;
 import com.beyond.basic.b2_board.author.service.AuthorService;
 import com.beyond.basic.b2_board.common.CommonErrorDto;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +44,8 @@ public class AuthorController {
 //        authorService ';= new AuthorService();
 //    }
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody AuthorCreateDto dto){
+//    dto에 있는 validation어노테이션과 @Valid가 한쌍
+    public ResponseEntity<?> create(@RequestBody @Valid AuthorCreateDto dto){
         try {
             authorService.save(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body("ok");
