@@ -15,6 +15,7 @@ import java.util.NoSuchElementException;
 public class CommonExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<?> illegal(IllegalArgumentException e){
+        e.printStackTrace();
         CommonErrorDto dto = CommonErrorDto.builder()
                 .status_code(400)
                 .error_message(e.getMessage())
@@ -31,6 +32,7 @@ public class CommonExceptionHandler {
     }
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<?> noSuch(NoSuchElementException e){
+        e.printStackTrace();
         CommonErrorDto dto = CommonErrorDto.builder()
                 .status_code(404)
                 .error_message(e.getMessage())
@@ -39,6 +41,7 @@ public class CommonExceptionHandler {
     }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> exception(Exception e){
+        e.printStackTrace();
         CommonErrorDto dto = CommonErrorDto.builder()
                 .status_code(500)
                 .error_message(e.getMessage())

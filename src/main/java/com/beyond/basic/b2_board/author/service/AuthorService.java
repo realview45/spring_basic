@@ -5,6 +5,7 @@ import com.beyond.basic.b2_board.author.dtos.AuthorDetailDto;
 import com.beyond.basic.b2_board.author.dtos.AuthorListDto;
 import com.beyond.basic.b2_board.author.repository.AuthorJdbcRepository;
 import com.beyond.basic.b2_board.author.repository.AuthorMemoryRepository;
+import com.beyond.basic.b2_board.author.repository.AuthorMybatisRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -14,10 +15,10 @@ import java.util.stream.Collectors;
 //Component어노테이션을 통해 싱글통(단하나의)객체가 생성되고, 스프링에 의해 스프링컨텍스트에서 관리
 @Service
 public class AuthorService {
-    private final AuthorJdbcRepository authorRepository;
+    private final AuthorMybatisRepository authorRepository;
 //    생성자가 하나밖에 없을때에는 Autowired생략가능 내가 짤때는 붙여주는게 성능이 좋다라고 알려짐
     @Autowired
-    public AuthorService(AuthorJdbcRepository authorRepository){
+    public AuthorService(AuthorMybatisRepository authorRepository){
         this.authorRepository = authorRepository;
     }
 
