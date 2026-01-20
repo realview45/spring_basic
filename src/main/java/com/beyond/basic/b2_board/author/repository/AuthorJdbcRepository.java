@@ -81,4 +81,17 @@ public class AuthorJdbcRepository {
         }
         return authorList;
     }
+    public void delete(Long id){
+        try {
+            //jdbc 특징 raw query(노가다)를 직접한다구리 1
+            Connection connection = dataSource.getConnection();
+            String sql = "delete from author where id = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setLong(1, id);
+//            executeUpdate : 추가/수정, executeQuery : 조회
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

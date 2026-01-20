@@ -68,7 +68,7 @@ public class AuthorController {
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable Long id){
-        System.out.println(id);
+        authorService.delete(id);
         return "ok";
     }
 }

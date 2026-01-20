@@ -31,7 +31,7 @@ dependencies {
 
 //    db 드라이버 : mariadb, mysql, oracle 등
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
-//    db 관리 기술 : jdbc, mybatis, jpa(spring data jpa)
+//    db 관리 기술 : jdbc, mybatis(ibatis), jpa(spring data jpa)
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 
 //    아래는 테스트코드 작성을 위한 의존성
