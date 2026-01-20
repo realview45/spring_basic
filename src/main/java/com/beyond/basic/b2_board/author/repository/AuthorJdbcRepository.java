@@ -93,4 +93,25 @@ public class AuthorJdbcRepository {
             throw new RuntimeException(e);
         }
     }
+    public Optional<Author> findByEmail(String inputEmail){
+        Author author = null;
+        try {
+            Connection connection = dataSource.getConnection();
+            String sql = "select * from author where email = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, inputEmail);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()){//커서를 밑으로 내리는 메서드
+                Long id = rs.getLong("id");
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                author = Author.builder().id(id).name(name).email(email).password(password).build();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return Optional.ofNullable(author);
+    }
+
 }

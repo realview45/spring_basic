@@ -22,7 +22,12 @@ public class AuthorService {
     }
 
     public void save(AuthorCreateDto dto){
-        authorRepository.save(dto.toEntity());
+        Optional<Author> optAuthor = authorRepository.findByEmail(dto.getEmail());
+        if(optAuthor.isPresent()){
+            throw new IllegalArgumentException("email중복입니다.");
+        }
+        Author author = dto.toEntity();
+        authorRepository.save(author);
     }
     public List<AuthorListDto> findAll(){
         return authorRepository.findAll().stream()
