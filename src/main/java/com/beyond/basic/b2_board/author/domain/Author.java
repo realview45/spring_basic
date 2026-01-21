@@ -23,5 +23,10 @@ public class Author {
     @Column(length=50,unique=true,nullable=false)
     private String email;
 //    @Column(name = "pw") : 컬럼명의 변경이 가능하나, 일반적으로 일치시킴.
+//    @Setter
     private String password;
+
+    public void updatePassword(String password){
+        this.password = password;
+    }
 }

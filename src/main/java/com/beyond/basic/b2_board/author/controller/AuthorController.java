@@ -4,6 +4,7 @@ import com.beyond.basic.b2_board.author.domain.Author;
 import com.beyond.basic.b2_board.author.dtos.AuthorCreateDto;
 import com.beyond.basic.b2_board.author.dtos.AuthorDetailDto;
 import com.beyond.basic.b2_board.author.dtos.AuthorListDto;
+import com.beyond.basic.b2_board.author.dtos.AuthorUpdatePwDto;
 import com.beyond.basic.b2_board.author.service.AuthorService;
 import com.beyond.basic.b2_board.common.CommonErrorDto;
 import jakarta.validation.Valid;
@@ -107,5 +108,10 @@ public class AuthorController {
     public String delete(@PathVariable Long id){
         authorService.delete(id);
         return "ok";
+    }
+
+    @PatchMapping("/update/password")
+    public void updatePw(@RequestBody AuthorUpdatePwDto dto){
+        authorService.updatePw(dto);
     }
 }

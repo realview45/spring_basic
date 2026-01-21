@@ -3,7 +3,9 @@ import com.beyond.basic.b2_board.author.domain.Author;
 import com.beyond.basic.b2_board.author.dtos.AuthorCreateDto;
 import com.beyond.basic.b2_board.author.dtos.AuthorDetailDto;
 import com.beyond.basic.b2_board.author.dtos.AuthorListDto;
+import com.beyond.basic.b2_board.author.dtos.AuthorUpdatePwDto;
 import com.beyond.basic.b2_board.author.repository.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +38,14 @@ public class AuthorService {
         //Transactional이 붙어 한트랜잭션내에 에러발생시 위의 save도 rollback처리된다구리.
 //        authorRepository.findById(2L).orElseThrow(()->new NoSuchElementException("entity is not found"));
     }
+
+    public void updatePw(AuthorUpdatePwDto dto){
+        Author author = authorRepository.findByEmail(dto.getEmail()).orElseThrow(()-> new EntityNotFoundException("Entity not found"));
+        author.updatePassword(dto.getPassword());
+//        insert, update 모두 save메서드 사용
+        authorRepository.save(author);
+    }
+
     @Transactional(readOnly=true)
     public List<AuthorListDto> findAll(){
         return authorRepository.findAll().stream()

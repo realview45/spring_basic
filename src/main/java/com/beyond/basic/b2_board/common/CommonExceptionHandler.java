@@ -1,4 +1,5 @@
 package com.beyond.basic.b2_board.common;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,15 @@ public class CommonExceptionHandler {
     }
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<?> noSuch(NoSuchElementException e){
+        e.printStackTrace();
+        CommonErrorDto dto = CommonErrorDto.builder()
+                .status_code(404)
+                .error_message(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(dto);
+    }
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<?> noSuch(EntityNotFoundException e){
         e.printStackTrace();
         CommonErrorDto dto = CommonErrorDto.builder()
                 .status_code(404)
