@@ -3,10 +3,7 @@ import com.beyond.basic.b2_board.author.domain.Author;
 import com.beyond.basic.b2_board.author.dtos.AuthorCreateDto;
 import com.beyond.basic.b2_board.author.dtos.AuthorDetailDto;
 import com.beyond.basic.b2_board.author.dtos.AuthorListDto;
-import com.beyond.basic.b2_board.author.repository.AuthorJdbcRepository;
-import com.beyond.basic.b2_board.author.repository.AuthorJpaRepository;
-import com.beyond.basic.b2_board.author.repository.AuthorMemoryRepository;
-import com.beyond.basic.b2_board.author.repository.AuthorMybatisRepository;
+import com.beyond.basic.b2_board.author.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,10 +19,10 @@ import java.util.stream.Collectors;
 //Transactional과 Service가 같이붙어있구리
 @Transactional
 public class AuthorService {
-    private final AuthorJpaRepository authorRepository;
+    private final AuthorRepository authorRepository;
 //    생성자가 하나밖에 없을때에는 Autowired생략가능 내가 짤때는 붙여주는게 성능이 좋다라고 알려짐
     @Autowired
-    public AuthorService(AuthorJpaRepository authorRepository){
+    public AuthorService(AuthorRepository authorRepository){
         this.authorRepository = authorRepository;
     }
     public void save(AuthorCreateDto dto){
@@ -57,6 +54,6 @@ public class AuthorService {
 //        데이터 조회 후 없다면 예외처리
         Author author = authorRepository.findById(id).orElseThrow(()->new NoSuchElementException("entity is not found"));
 //        삭제작업
-        authorRepository.delete(id);
+        authorRepository.delete(author);
     }
 }
