@@ -21,7 +21,6 @@ public class AuthorService {
     public AuthorService(AuthorMybatisRepository authorRepository){
         this.authorRepository = authorRepository;
     }
-
     public void save(AuthorCreateDto dto){
         Optional<Author> optAuthor = authorRepository.findByEmail(dto.getEmail());
         if(optAuthor.isPresent()){
