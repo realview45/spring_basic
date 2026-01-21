@@ -35,6 +35,8 @@ public class AuthorService {
         }
         Author author = dto.toEntity();
         authorRepository.save(author);
+        //Transactional이 붙어 한트랜잭션내에 에러발생시 위의 save도 rollback처리된다.
+        authorRepository.findById(100L).orElseThrow(()->new NoSuchElementException("entity is not found"));
     }
     public List<AuthorListDto> findAll(){
         return authorRepository.findAll().stream()
