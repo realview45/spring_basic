@@ -1,7 +1,6 @@
 package com.beyond.basic.b2_board.author.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 //저자(Author)엔티티 도메인 -name, email, password
@@ -14,8 +13,15 @@ import lombok.*;
 @Entity
 public class Author {
     @Id //pk설정
+//    identity : auto_increment설정. auto:id생섯전략을 jpa에게 자동설정하도록 위임.
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    Long -> bigint, String -> varchar, LocalDateTime -> datetime, enum, boolean
     private Long id;
+//    변수명이 컬럼명으로 그대로 생성. camel case는 언더스코어로 변경. 예)nickName -> nick_name
     private String name;
+//    길이(varchar50, 디폴트-varchar255), 제약조건(unique, not null)설정
+    @Column(length=50,unique=true,nullable=false)
     private String email;
+//    @Column(name = "pw") : 컬럼명의 변경이 가능하나, 일반적으로 일치시킴.
     private String password;
 }
