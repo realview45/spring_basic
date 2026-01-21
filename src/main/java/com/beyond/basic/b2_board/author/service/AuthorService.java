@@ -42,8 +42,11 @@ public class AuthorService {
     public void updatePw(AuthorUpdatePwDto dto){
         Author author = authorRepository.findByEmail(dto.getEmail()).orElseThrow(()-> new EntityNotFoundException("Entity not found"));
         author.updatePassword(dto.getPassword());
-//        insert, update 모두 save메서드 사용
-        authorRepository.save(author);
+//        insert, update 모두 save메서드 사용 -> 변경감지로 대체
+//        authorRepository.save(author);
+//        영속성컨텍스트 : 애플리케이션과 DB사이에서 객체를 보관하는 가상의 DB역할
+//        1)쓰기지연 : insert, update 등의 작업사항을 즉시 실행하지 않고, 커밋시점에 모아서 실행(성능향상)
+//        2)변경감지(dirty checking) : 영속상태(managed)의 엔티티는 트랜잭션 커밋시점에 변경감지를 통해 별도의 save없이 DB에 반영
     }
 
     @Transactional(readOnly=true)
