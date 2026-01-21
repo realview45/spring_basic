@@ -39,11 +39,14 @@ public class AuthorService {
         //Transactional이 붙어 한트랜잭션내에 에러발생시 위의 save도 rollback처리된다구리.
 //        authorRepository.findById(2L).orElseThrow(()->new NoSuchElementException("entity is not found"));
     }
+    @Transactional(readOnly=true)
     public List<AuthorListDto> findAll(){
         return authorRepository.findAll().stream()
                 .map(a->AuthorListDto.fromEntity(a))
                 .collect(Collectors.toList());//리스트로 바꿔준다.
     }
+//    트랜잭션 처리가 필요없는 조회만 있는 메서드의 경우 성능향상을 위해 readOnly처리
+    @Transactional(readOnly=true)
     public AuthorDetailDto findById(Long id){
         Optional<Author> optAuthor = authorRepository.findById(id);
                                                     //entitynotfound jpa구리
