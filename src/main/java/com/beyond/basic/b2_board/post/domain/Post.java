@@ -26,6 +26,8 @@ public class Post extends BaseTimeEntity {
 //    @Column(nullable = false)
 //    private Long authorId;
 
+//    ManyToOne을 통해 fk설정(author_id컬럼)
+//    ManyToOne을 통해 author_id컬럼으로 author객체 조회 및 객체자동생성
     @ManyToOne//fk설정
 //    @JoinColumn()//fk에대한 옵션
     private Author author;
