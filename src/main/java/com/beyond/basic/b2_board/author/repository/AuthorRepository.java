@@ -14,5 +14,5 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
 //    save, findById, findAll, delete등은 사전에 구현
 
 //    그외에 다른컬럼으로 조회할 때에는 findBy+컬럼명 형식으로 선언하면 실행시점 자동구현.
-    Optional<Author> findByEmail(String email);
+    Optional<Author> findAllByEmail(String email);
 }
