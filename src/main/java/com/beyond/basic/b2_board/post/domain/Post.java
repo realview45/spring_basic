@@ -32,7 +32,7 @@ public class Post extends BaseTimeEntity {
 //    fetch lazy(지연로딩) : author객체를 사용하지 않는 한, author객체를 생성하지 X(서버부하감소)
     @ManyToOne(fetch = FetchType.LAZY)//fk설정
 //    ManyToOne 어노테이션만 추가하더라도, 아래 옵션이 생략되어있는것. fk를 설정하지 않고자 할때, NO_CONSTRAINT설정2만 수행
-    @JoinColumn(name = "author_id", foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT))//fk에대한 옵션
+    @JoinColumn(name = "author_id", foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT), nullable = false)//fk에대한 옵션
     private Author author;
     @Builder.Default
     private String delYn="N";
