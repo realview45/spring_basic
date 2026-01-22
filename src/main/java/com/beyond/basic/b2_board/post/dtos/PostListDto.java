@@ -21,12 +21,12 @@ public class PostListDto {
     private String authorEmail;
     private String delYn;
 
-    public static PostListDto fromEntity(Post post,Author author){
+    public static PostListDto fromEntity(Post post){
         return PostListDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .category(post.getCategory())
-                .authorEmail(author.getEmail())
+                .authorEmail(post.getAuthor().getEmail())
                 .delYn(post.getDelYn())
                 .build();
     }

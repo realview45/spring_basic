@@ -32,8 +32,9 @@ public class PostService {
     @Transactional(readOnly=true)
     public PostDetailDto findById(Long id) {
         Post post = postRepository.findById(id).orElseThrow(()->new EntityNotFoundException("entity is not found"));
-        Author author = authorRepository.findById(post.getAuthorId()).orElseThrow(()->new EntityNotFoundException("entity is not found"));
-        PostDetailDto postDetailDto = PostDetailDto.fromEntity(post, author);
+//        Author author = authorRepository.findById(post.getAuthorId()).orElseThrow(()->new EntityNotFoundException("entity is not found"));
+//        PostDetailDto postDetailDto = PostDetailDto.fromEntity(post, author);
+        PostDetailDto postDetailDto = PostDetailDto.fromEntity(post);
         return postDetailDto;
     }
     @Transactional(readOnly=true)
@@ -41,8 +42,7 @@ public class PostService {
         List<Post> postList = postRepository.findAllByDelYn("N");
         List<PostListDto> dtoList = new ArrayList<>();
         for(Post p : postList){
-            Author author = authorRepository.findById(p.getAuthorId()).orElseThrow(()->new EntityNotFoundException("entity is not found"));
-            dtoList.add(PostListDto.fromEntity(p,author));
+            dtoList.add(PostListDto.fromEntity(p));
         }
         return dtoList;
 //        return postList.stream().map(p->

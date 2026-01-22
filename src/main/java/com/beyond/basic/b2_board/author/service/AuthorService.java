@@ -64,9 +64,9 @@ public class AuthorService {
     public AuthorDetailDto findById(Long id){
         Optional<Author> optAuthor = authorRepository.findById(id);
         Author author = optAuthor.orElseThrow(()->new NoSuchElementException("entity is not found"));
-        List<Post> postList = postRepository.findAllByAuthorIdAndDelYn(author.getId(), "N");
+//        List<Post> postList = postRepository.findAllByAuthorIdAndDelYn(author.getId(), "N");
                                                     //entitynotfound jpa구리
-        return AuthorDetailDto.fromEntity(author, postList.size());
+        return AuthorDetailDto.fromEntity(author, 0);
     }
     public void delete(Long id){
 //        데이터 조회 후 없다면 예외처리
