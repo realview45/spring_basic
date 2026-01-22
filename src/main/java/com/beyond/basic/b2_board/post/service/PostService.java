@@ -24,7 +24,7 @@ public class PostService {
         this.authorRepository = authorRepository;
     }
     public void save(PostCreateDto dto) {
-        authorRepository.findByEmail(dto.getAuthorEmail()).orElseThrow(()->new EntityNotFoundException("Entity is not found"));
+        authorRepository.findAllByEmail(dto.getAuthorEmail()).orElseThrow(()->new EntityNotFoundException("Entity is not found"));
         postRepository.save(dto.toEntity());
     }
     @Transactional(readOnly=true)
