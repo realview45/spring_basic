@@ -18,13 +18,13 @@ public class AuthorDetailDto {
     private int postCount;
     private String password;
     private Role role;
-    public static AuthorDetailDto fromEntity(Author author, int postCount){
+    public static AuthorDetailDto fromEntity(Author author){
         return AuthorDetailDto.builder()
                 .id(author.getId())
                 .name(author.getName())
                 .email(author.getEmail())
                 .role(author.getRole())
-                .postCount(postCount)
+                .postCount(author.getPostList().size())
                 .password(author.getPassword())
                 .build();
     }

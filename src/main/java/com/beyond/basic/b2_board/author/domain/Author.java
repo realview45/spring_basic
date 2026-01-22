@@ -1,12 +1,14 @@
 package com.beyond.basic.b2_board.author.domain;
 
 import com.beyond.basic.b2_board.common.BaseTimeEntity;
+import com.beyond.basic.b2_board.post.domain.Post;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 //저자(Author)엔티티 도메인 -name, email, password
 @AllArgsConstructor
@@ -34,6 +36,14 @@ public class Author extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private Role role = Role.USER;
+
+//    일반적으로 OneToMany는 선택사항. ManyToOne은 필수사항.
+//    mappedBy : ManyToOne쪽의 변수명을 문자열로 지정. -> 조회해야할 컬럼을 명시
+//    연관관계(fk)의 주인설정 -> 연관관계의 주인은 author변수를 가지고 있는 Post에 있음을 명시
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    List<Post> postList;
+
+
     public void updatePassword(String password){
         this.password = password;
     }

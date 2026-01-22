@@ -3,6 +3,7 @@ package com.beyond.basic.b2_board.post.domain;
 import com.beyond.basic.b2_board.author.domain.Author;
 import com.beyond.basic.b2_board.common.BaseTimeEntity;
 import jakarta.persistence.*;
+import jakarta.validation.Constraint;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -26,10 +27,12 @@ public class Post extends BaseTimeEntity {
 //    @Column(nullable = false)
 //    private Long authorId;
 
-//    ManyToOne을 통해 fk설정(author_id컬럼)
-//    ManyToOne을 통해 author_id컬럼으로 author객체 조회 및 객체자동생성
-    @ManyToOne//fk설정
-//    @JoinColumn()//fk에대한 옵션
+//    1.ManyToOne을 통해 fk설정(author_id컬럼)
+//    2.ManyToOne을 통해 author_id컬럼으로 author객체 조회 및 객체자동생성
+//    fetch lazy(지연로딩) : author객체를 사용하지 않는 한, author객체를 생성하지 X(서버부하감소)
+    @ManyToOne(fetch = FetchType.LAZY)//fk설정
+//    ManyToOne 어노테이션만 추가하더라도, 아래 옵션이 생략되어있는것. fk를 설정하지 않고자 할때, NO_CONSTRAINT설정2만 수행
+    @JoinColumn(name = "author_id", foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT))//fk에대한 옵션
     private Author author;
     @Builder.Default
     private String delYn="N";
