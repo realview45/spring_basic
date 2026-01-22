@@ -1,5 +1,6 @@
 package com.beyond.basic.b2_board.post.domain;
 
+import com.beyond.basic.b2_board.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter @ToString
 @Builder
 @Entity
-public class Post {
+public class Post extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,13 +23,10 @@ public class Post {
     private String contents;
     private String category;
     @Column(nullable = false)
-    private String authorEmail;
+    private Long authorId;
     @Builder.Default
     private String delYn="N";
-    @CreationTimestamp
-    private LocalDateTime createdTime;
-    @UpdateTimestamp
-    private LocalDateTime updatedTime;
+
     public void deleteDelYn(){
         delYn = "Y";
     }

@@ -1,5 +1,6 @@
 package com.beyond.basic.b2_board.author.domain;
 
+import com.beyond.basic.b2_board.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 //JPA에게 Entity관리를 위임하기 위한 어노테이션
 @Entity
-public class Author {
+public class Author extends BaseTimeEntity {
     @Id //pk설정
 //    identity : auto_increment설정. auto:id생섯전략을 jpa에게 자동설정하도록 위임.
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,10 +34,6 @@ public class Author {
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private Role role = Role.USER;
-    @CreationTimestamp
-    private LocalDateTime createdTime;
-    @UpdateTimestamp
-    private LocalDateTime updatedTime;
     public void updatePassword(String password){
         this.password = password;
     }

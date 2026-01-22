@@ -15,14 +15,16 @@ public class AuthorDetailDto {
     private Long id;
     private String name;
     private String email;
+    private int postCount;
     private String password;
     private Role role;
-    public static AuthorDetailDto fromEntity(Author author){
+    public static AuthorDetailDto fromEntity(Author author, int postCount){
         return AuthorDetailDto.builder()
                 .id(author.getId())
                 .name(author.getName())
                 .email(author.getEmail())
                 .role(author.getRole())
+                .postCount(postCount)
                 .password(author.getPassword())
                 .build();
     }

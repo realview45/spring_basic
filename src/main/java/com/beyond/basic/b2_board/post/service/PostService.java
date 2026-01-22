@@ -1,5 +1,6 @@
 package com.beyond.basic.b2_board.post.service;
 
+import com.beyond.basic.b2_board.author.domain.Author;
 import com.beyond.basic.b2_board.author.repository.AuthorRepository;
 import com.beyond.basic.b2_board.post.domain.Post;
 import com.beyond.basic.b2_board.post.dtos.PostCreateDto;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 @Service
@@ -24,21 +26,30 @@ public class PostService {
         this.authorRepository = authorRepository;
     }
     public void save(PostCreateDto dto) {
-        authorRepository.findAllByEmail(dto.getAuthorEmail()).orElseThrow(()->new EntityNotFoundException("email is not found"));
-        postRepository.save(dto.toEntity());
+        Author author = authorRepository.findByEmail(dto.getAuthorEmail()).orElseThrow(()->new EntityNotFoundException("email is not found"));
+        postRepository.save(dto.toEntity(author));
     }
     @Transactional(readOnly=true)
     public PostDetailDto findById(Long id) {
         Post post = postRepository.findById(id).orElseThrow(()->new EntityNotFoundException("entity is not found"));
-        PostDetailDto dto = PostDetailDto.fromEntity(post);
-        return dto;
+        Author author = authorRepository.findById(post.getAuthorId()).orElseThrow(()->new EntityNotFoundException("entity is not found"));
+        PostDetailDto postDetailDto = PostDetailDto.fromEntity(post, author);
+        return postDetailDto;
     }
     @Transactional(readOnly=true)
     public List<PostListDto> findAll() {
         List<Post> postList = postRepository.findAllByDelYn("N");
-        return postList.stream().map(p->PostListDto.fromEntity(p)).collect(Collectors.toList());
+        List<PostListDto> dtoList = new ArrayList<>();
+        for(Post p : postList){
+            Author author = authorRepository.findById(p.getAuthorId()).orElseThrow(()->new EntityNotFoundException("entity is not found"));
+            dtoList.add(PostListDto.fromEntity(p,author));
+        }
+        return dtoList;
+//        return postList.stream().map(p->
+//                PostListDto.fromEntity(p,authorRepository
+//                        .findById(p.getAuthorId()).orElseThrow(()-> new EntityNotFoundException("entity not found"))))
+//                .collect(Collectors.toList());
     }
-
     public void delete(Long id) {
         Post post = postRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Entity is not found"));
         if(post.getDelYn().equals("Y")){

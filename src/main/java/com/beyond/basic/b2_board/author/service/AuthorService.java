@@ -5,6 +5,8 @@ import com.beyond.basic.b2_board.author.dtos.AuthorDetailDto;
 import com.beyond.basic.b2_board.author.dtos.AuthorListDto;
 import com.beyond.basic.b2_board.author.dtos.AuthorUpdatePwDto;
 import com.beyond.basic.b2_board.author.repository.*;
+import com.beyond.basic.b2_board.post.domain.Post;
+import com.beyond.basic.b2_board.post.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,13 +24,15 @@ import java.util.stream.Collectors;
 @Transactional
 public class AuthorService {
     private final AuthorRepository authorRepository;
+    private final PostRepository postRepository;
 //    생성자가 하나밖에 없을때에는 Autowired생략가능 내가 짤때는 붙여주는게 성능이 좋다라고 알려짐
     @Autowired
-    public AuthorService(AuthorRepository authorRepository){
+    public AuthorService(AuthorRepository authorRepository, PostRepository postRepository){
         this.authorRepository = authorRepository;
+        this.postRepository = postRepository;
     }
     public void save(AuthorCreateDto dto){
-        Optional<Author> optAuthor = authorRepository.findAllByEmail(dto.getEmail());
+        Optional<Author> optAuthor = authorRepository.findByEmail(dto.getEmail());
         if(optAuthor.isPresent()){
             throw new IllegalArgumentException("email중복입니다.");
         }
@@ -40,7 +44,7 @@ public class AuthorService {
     }
 
     public void updatePw(AuthorUpdatePwDto dto){
-        Author author = authorRepository.findAllByEmail(dto.getEmail()).orElseThrow(()-> new EntityNotFoundException("Entity not found"));
+        Author author = authorRepository.findByEmail(dto.getEmail()).orElseThrow(()-> new EntityNotFoundException("Entity not found"));
         author.updatePassword(dto.getPassword());
 //        insert, update 모두 save메서드 사용 -> 변경감지로 대체
 //        authorRepository.save(author);
@@ -59,9 +63,10 @@ public class AuthorService {
     @Transactional(readOnly=true)
     public AuthorDetailDto findById(Long id){
         Optional<Author> optAuthor = authorRepository.findById(id);
-                                                    //entitynotfound jpa구리
         Author author = optAuthor.orElseThrow(()->new NoSuchElementException("entity is not found"));
-        return AuthorDetailDto.fromEntity(author);
+        List<Post> postList = postRepository.findAllByAuthorIdAndDelYn(author.getId(), "N");
+                                                    //entitynotfound jpa구리
+        return AuthorDetailDto.fromEntity(author, postList.size());
     }
     public void delete(Long id){
 //        데이터 조회 후 없다면 예외처리

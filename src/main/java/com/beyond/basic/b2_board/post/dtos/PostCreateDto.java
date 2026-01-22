@@ -1,4 +1,5 @@
 package com.beyond.basic.b2_board.post.dtos;
+import com.beyond.basic.b2_board.author.domain.Author;
 import com.beyond.basic.b2_board.post.domain.Post;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -16,12 +17,12 @@ public class PostCreateDto {
     private String category;
     @NotBlank
     private String authorEmail;
-    public Post toEntity(){
+    public Post toEntity(Author author){
         return Post.builder()
-                .title(title)
-                .contents(contents)
-                .category(category)
-                .authorEmail(authorEmail)
+                .title(this.title)
+                .contents(this.contents)
+                .category(this.category)
+                .authorId(author.getId())
 //                .delYn("N")
                 .build();
     }
