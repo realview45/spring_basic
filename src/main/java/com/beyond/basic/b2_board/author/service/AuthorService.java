@@ -28,7 +28,7 @@ public class AuthorService {
         this.authorRepository = authorRepository;
     }
     public void save(AuthorCreateDto dto){
-        Optional<Author> optAuthor = authorRepository.findByEmail(dto.getEmail());
+        Optional<Author> optAuthor = authorRepository.findAllByEmail(dto.getEmail());
         if(optAuthor.isPresent()){
             throw new IllegalArgumentException("email중복입니다.");
         }
@@ -40,7 +40,7 @@ public class AuthorService {
     }
 
     public void updatePw(AuthorUpdatePwDto dto){
-        Author author = authorRepository.findByEmail(dto.getEmail()).orElseThrow(()-> new EntityNotFoundException("Entity not found"));
+        Author author = authorRepository.findAllByEmail(dto.getEmail()).orElseThrow(()-> new EntityNotFoundException("Entity not found"));
         author.updatePassword(dto.getPassword());
 //        insert, update 모두 save메서드 사용 -> 변경감지로 대체
 //        authorRepository.save(author);

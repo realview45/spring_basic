@@ -24,19 +24,19 @@ public class PostService {
         this.authorRepository = authorRepository;
     }
     public void save(PostCreateDto dto) {
-        authorRepository.findAllByEmail(dto.getAuthorEmail()).orElseThrow(()->new EntityNotFoundException("Entity is not found"));
+        authorRepository.findAllByEmail(dto.getAuthorEmail()).orElseThrow(()->new EntityNotFoundException("email is not found"));
         postRepository.save(dto.toEntity());
     }
     @Transactional(readOnly=true)
     public PostDetailDto findById(Long id) {
-        Post post = postRepository.findById(id).orElseThrow();
+        Post post = postRepository.findById(id).orElseThrow(()->new EntityNotFoundException("entity is not found"));
         PostDetailDto dto = PostDetailDto.fromEntity(post);
         return dto;
     }
     @Transactional(readOnly=true)
     public List<PostListDto> findAll() {
-        List<Post> postList = postRepository.findAll();
-        return postList.stream().map(a->PostListDto.fromEntity(a)).collect(Collectors.toList());
+        List<Post> postList = postRepository.findAllByDelYn("N");
+        return postList.stream().map(p->PostListDto.fromEntity(p)).collect(Collectors.toList());
     }
 
     public void delete(Long id) {
@@ -44,6 +44,6 @@ public class PostService {
         if(post.getDelYn().equals("Y")){
             throw new EntityNotFoundException("Entity is not found");
         }
-        post.updateDelYn();
+        post.deleteDelYn();
     }
 }

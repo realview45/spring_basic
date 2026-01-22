@@ -6,13 +6,13 @@ import com.beyond.basic.b2_board.post.service.PostService;
 import jakarta.validation.Valid;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("")
 public class PostController {
     private final PostService postService;
     @Autowired
@@ -21,6 +21,7 @@ public class PostController {
     }
 
     @PostMapping("/post/create")
+    @ResponseStatus(HttpStatus.CREATED)
     public void create(@RequestBody @Valid PostCreateDto dto){
         postService.save(dto);
     }

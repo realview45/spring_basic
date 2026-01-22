@@ -19,8 +19,9 @@ public class Post {
     private String category;
     @Column(nullable = false)
     private String authorEmail;
-    private String delYn;
-    public void updateDelYn(){
+    @Builder.Default
+    private String delYn="N";
+    public void deleteDelYn(){
         delYn = "Y";
     }
 }

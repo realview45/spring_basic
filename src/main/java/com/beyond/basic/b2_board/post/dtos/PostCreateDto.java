@@ -22,7 +22,7 @@ public class PostCreateDto {
                 .contents(contents)
                 .category(category)
                 .authorEmail(authorEmail)
-                .delYn("N")
+//                .delYn("N")
                 .build();
     }
 }
