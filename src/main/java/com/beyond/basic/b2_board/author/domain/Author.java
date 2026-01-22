@@ -2,6 +2,10 @@ package com.beyond.basic.b2_board.author.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 //저자(Author)엔티티 도메인 -name, email, password
 @AllArgsConstructor
@@ -25,7 +29,14 @@ public class Author {
 //    @Column(name = "pw") : 컬럼명의 변경이 가능하나, 일반적으로 일치시킴.
 //    @Setter
     private String password;
-
+//    enum타입은 내부적으로 숫자값을 가지고 있으나, 문자형태로 저장하겠다는 어노테이션
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private Role role = Role.USER;
+    @CreationTimestamp
+    private LocalDateTime createdTime;
+    @UpdateTimestamp
+    private LocalDateTime updatedTime;
     public void updatePassword(String password){
         this.password = password;
     }

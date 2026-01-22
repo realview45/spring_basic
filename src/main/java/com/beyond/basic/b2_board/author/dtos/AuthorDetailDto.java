@@ -1,6 +1,7 @@
 package com.beyond.basic.b2_board.author.dtos;
 
 import com.beyond.basic.b2_board.author.domain.Author;
+import com.beyond.basic.b2_board.author.domain.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,11 +16,13 @@ public class AuthorDetailDto {
     private String name;
     private String email;
     private String password;
+    private Role role;
     public static AuthorDetailDto fromEntity(Author author){
         return AuthorDetailDto.builder()
                 .id(author.getId())
                 .name(author.getName())
                 .email(author.getEmail())
+                .role(author.getRole())
                 .password(author.getPassword())
                 .build();
     }

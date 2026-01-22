@@ -2,6 +2,10 @@ package com.beyond.basic.b2_board.post.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,6 +25,10 @@ public class Post {
     private String authorEmail;
     @Builder.Default
     private String delYn="N";
+    @CreationTimestamp
+    private LocalDateTime createdTime;
+    @UpdateTimestamp
+    private LocalDateTime updatedTime;
     public void deleteDelYn(){
         delYn = "Y";
     }
