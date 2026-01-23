@@ -3,6 +3,7 @@ package com.beyond.basic.b2_board.author.controller;
 import com.beyond.basic.b2_board.author.domain.Author;
 import com.beyond.basic.b2_board.author.dtos.*;
 import com.beyond.basic.b2_board.author.service.AuthorService;
+import com.beyond.basic.b2_board.common.auth.JwtTokenProvider;
 import com.beyond.basic.b2_board.common.dtos.CommonErrorDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +32,11 @@ import java.util.NoSuchElementException;
 public class AuthorController {
 
     private final AuthorService authorService;
+    private final JwtTokenProvider jwtTokenProvider;
     @Autowired
-    public AuthorController(AuthorService authorService){
+    public AuthorController(AuthorService authorService, JwtTokenProvider jwtTokenProvider){
         this.authorService = authorService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
 //    @Autowired
@@ -116,6 +119,7 @@ public class AuthorController {
     public String login(@RequestBody AuthorLoginDto dto){
         Author author = authorService.login(dto);
 //        토큰 생성 및 리턴
-        return "ok";
+        String token = jwtTokenProvider.createToken(author);
+        return token;
     }
 }
