@@ -1,4 +1,4 @@
-package com.beyond.basic.b2_board.common;
+package com.beyond.basic.b2_board.common.auth;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

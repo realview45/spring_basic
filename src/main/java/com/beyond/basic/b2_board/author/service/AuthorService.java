@@ -1,9 +1,6 @@
 package com.beyond.basic.b2_board.author.service;
 import com.beyond.basic.b2_board.author.domain.Author;
-import com.beyond.basic.b2_board.author.dtos.AuthorCreateDto;
-import com.beyond.basic.b2_board.author.dtos.AuthorDetailDto;
-import com.beyond.basic.b2_board.author.dtos.AuthorListDto;
-import com.beyond.basic.b2_board.author.dtos.AuthorUpdatePwDto;
+import com.beyond.basic.b2_board.author.dtos.*;
 import com.beyond.basic.b2_board.author.repository.*;
 import com.beyond.basic.b2_board.post.domain.Post;
 import com.beyond.basic.b2_board.post.repository.PostRepository;
@@ -84,5 +81,20 @@ public class AuthorService {
         Author author = authorRepository.findById(id).orElseThrow(()->new NoSuchElementException("entity is not found"));
 //        삭제작업
         authorRepository.delete(author);
+    }
+    public Author login(AuthorLoginDto dto){
+        Optional<Author> opt_author = authorRepository.findByEmail(dto.getEmail());
+        boolean check = true;
+        if(!opt_author.isPresent()){
+            check=false;
+        }else{
+            if(!passwordEncoder.matches(dto.getPassword(),opt_author.get().getPassword())){
+                check=false;
+            }
+        }
+        if(!check){
+            throw new IllegalArgumentException("이메일또는 비밀번호가 일치하지 않습니다.");
+        }
+        return opt_author.get();
     }
 }
