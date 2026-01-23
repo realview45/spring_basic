@@ -23,11 +23,11 @@ public class AuthorCreateDto {
     @NotBlank(message = "비밀번호가 비어있으면 안됩니다.")
     @Size(min = 8, message = "비밀번호의 길이가 너무 짧습니다.")
     private String password;
-    public Author toEntity(){
+    public Author toEntity(String encodedPassword){
         return Author.builder()
                 .name(this.name)
                 .email(this.email)
-                .password(this.password)
+                .password(encodedPassword)
                 .build();
     }
 }

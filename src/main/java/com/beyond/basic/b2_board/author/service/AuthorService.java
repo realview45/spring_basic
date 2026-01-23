@@ -9,6 +9,7 @@ import com.beyond.basic.b2_board.post.domain.Post;
 import com.beyond.basic.b2_board.post.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,18 +26,21 @@ import java.util.stream.Collectors;
 public class AuthorService {
     private final AuthorRepository authorRepository;
     private final PostRepository postRepository;
+
+    private final PasswordEncoder passwordEncoder;
 //    생성자가 하나밖에 없을때에는 Autowired생략가능 내가 짤때는 붙여주는게 성능이 좋다라고 알려짐
     @Autowired
-    public AuthorService(AuthorRepository authorRepository, PostRepository postRepository){
+    public AuthorService(AuthorRepository authorRepository, PostRepository postRepository, PasswordEncoder passwordEncoder){
         this.authorRepository = authorRepository;
         this.postRepository = postRepository;
+        this.passwordEncoder = passwordEncoder;
     }
     public void save(AuthorCreateDto dto){
         Optional<Author> optAuthor = authorRepository.findByEmail(dto.getEmail());
         if(optAuthor.isPresent()){
             throw new IllegalArgumentException("email중복입니다.");
         }
-        Author author = dto.toEntity();
+        Author author = dto.toEntity(passwordEncoder.encode(dto.getPassword()));
 //        cascade persist를 활용한 예시
         Author authorDb = authorRepository.save(author);
         author.getPostList().add(Post.builder().title("안녕하세요").author(authorDb).build());//?
