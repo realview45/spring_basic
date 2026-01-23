@@ -41,10 +41,13 @@ public class Author extends BaseTimeEntity {
 //    일반적으로 OneToMany는 선택사항. ManyToOne은 필수사항.
 //    mappedBy : ManyToOne쪽의 변수명을 문자열로 지정. -> 조회해야할 컬럼을 명시
 //    연관관계(fk)의 주인설정 -> 연관관계의 주인은 author변수를 가지고 있는 Post에 있음을 명시
-    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    orphanRemoval : 자식의 자식까지 연쇄적으로 삭제해야할 경우 모든 부모에 orphanRemoval=true 옵션 추가.
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    List<Post> postList = new ArrayList<>();
+    private List<Post> postList = new ArrayList<>();
 
+    @OneToOne(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Address address;
 
     public void updatePassword(String password){
         this.password = password;

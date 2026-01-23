@@ -39,7 +39,8 @@ public class AuthorService {
         Author author = dto.toEntity();
 //        cascade persist를 활용한 예시
         Author authorDb = authorRepository.save(author);
-        author.getPostList().add(Post.builder().title("안녕하세요").author(authorDb).build());
+        author.getPostList().add(Post.builder().title("안녕하세요").author(authorDb).build());//?
+
 //        cascade 옵션이 아닌 예시
 //        postRepository.save(Post.builder().title("안녕하세요").author(authorDb).build());
 //        예외 발생시 transactional 어노테이션에 의해 rollback처리
