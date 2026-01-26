@@ -13,11 +13,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 public class SecurityConfig {
-//    private final JwtTokenFilter jwtTokenFilter;
-//    @Autowired
-//    public SecurityConfig(JwtTokenFilter jwtTokenFilter) {
-//        this.jwtTokenFilter = jwtTokenFilter;
-//    }
+    private final JwtTokenFilter jwtTokenFilter;
+    @Autowired
+    public SecurityConfig(JwtTokenFilter jwtTokenFilter) {
+        this.jwtTokenFilter = jwtTokenFilter;
+    }
 
     //    내가 만든 클래스와 객체는 @Component, 외부 클래스(라이브러리)를 활용한 객체는 @Component
 //    @Component는 클래스 위에 붙여 클래스기반에 객체를 싱글톤객체로 생성.
@@ -33,10 +33,12 @@ public class SecurityConfig {
 //                세션로그인방식 비활성화
                 .sessionManagement(a->a.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 //                token을 검증하고, Authentication객체 생성
-//                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
 //                지정한 특정url을 제외한 모든 요청에 대해서 authenticated(인증처리)하겠다라는 의미
+//                .authorizeHttpRequests(a->a.requestMatchers(
+//                        "/author/create", "/author/login").permitAll().anyRequest().authenticated())
                 .authorizeHttpRequests(a->a.requestMatchers(
-                        "/author/create", "/author/login").permitAll().anyRequest().authenticated())
+                        "/author/create", "/author/login" ).permitAll().anyRequest().authenticated())
                 .build();
     }
     @Bean

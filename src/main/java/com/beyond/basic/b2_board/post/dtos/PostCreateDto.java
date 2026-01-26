@@ -16,7 +16,7 @@ public class PostCreateDto {
     private String contents;
     private String category;
     @NotBlank
-    private String authorEmail;
+//    private String authorEmail;
     public Post toEntity(Author author){
         return Post.builder()
                 .title(this.title)

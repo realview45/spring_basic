@@ -9,6 +9,7 @@ import com.beyond.basic.b2_board.post.dtos.PostListDto;
 import com.beyond.basic.b2_board.post.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +27,10 @@ public class PostService {
         this.authorRepository = authorRepository;
     }
     public void save(PostCreateDto dto) {
+//        Author author = authorRepository.findByEmail(dto.getAuthorEmail()).orElseThrow(()->new EntityNotFoundException("email is not found"));
+        String email = SecurityContextHolder.getContext().getAuthentication().get
         Author author = authorRepository.findByEmail(dto.getAuthorEmail()).orElseThrow(()->new EntityNotFoundException("email is not found"));
+
         postRepository.save(dto.toEntity(author));
     }
     @Transactional(readOnly=true)
