@@ -28,8 +28,9 @@ public class PostService {
     }
     public void save(PostCreateDto dto) {
 //        Author author = authorRepository.findByEmail(dto.getAuthorEmail()).orElseThrow(()->new EntityNotFoundException("email is not found"));
-        String email = SecurityContextHolder.getContext().getAuthentication().get
-        Author author = authorRepository.findByEmail(dto.getAuthorEmail()).orElseThrow(()->new EntityNotFoundException("email is not found"));
+        String email = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        System.out.println(email);
+        Author author = authorRepository.findByEmail(email).orElseThrow(()->new EntityNotFoundException("email is not found"));
 
         postRepository.save(dto.toEntity(author));
     }

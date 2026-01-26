@@ -46,12 +46,12 @@ public class JwtTokenFilter extends GenericFilter {
 //      claims를 기반으로 authentication 객체생성
 //        권한의 경우 다수의 권한을 가질수 있으므로 일반적으로 List로 설계
         List<GrantedAuthority> authorities = new ArrayList<>();
-        //권한을 자동으로 체크해주는 어노테이션을 쓰기 위해구리
+//        권한을 세팅할 때 권한은 ROLE_라는 키워드를 붙임으로서 추후 권한체크 어노테이션 사용가능
         authorities.add(new SimpleGrantedAuthority("ROLE_" + claims.get("role")));
 
 //        1)principal : email 2)credentials : 토큰 3)authorities : 권한묶음
-        Authentication authentication = new UsernamePasswordAuthenticationToken(claims.getSubject(), "", 권한묶음);
-        SecurityContextHolder.getContext().setAuthentication();
+        Authentication authentication = new UsernamePasswordAuthenticationToken(claims.getSubject(), "", authorities);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         //        다시 filterChain으로 돌아가는 로직
         filterChain.doFilter(servletRequest, servletResponse);
     }
