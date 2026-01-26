@@ -3,6 +3,7 @@ import com.beyond.basic.b2_board.common.dtos.CommonErrorDto;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -27,6 +28,14 @@ public class CommonExceptionHandler {
                 .error_message(e.getFieldError().getDefaultMessage())
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(dto);
+    }
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<?> notValid(AuthorizationDeniedException e){
+        CommonErrorDto dto = CommonErrorDto.builder()
+                .status_code(403)
+                .error_message(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(dto);
     }
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<?> noSuch(NoSuchElementException e){
