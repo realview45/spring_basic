@@ -1,5 +1,7 @@
-package com.beyond.basic.b2_board.common.auth;
+package com.beyond.basic.b2_board.common.configs;
 
+import com.beyond.basic.b2_board.common.auth.JwtTokenFilter;
+import com.beyond.basic.b2_board.common.exception.JwtAuthenticationHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,9 +16,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
     private final JwtTokenFilter jwtTokenFilter;
+    private final JwtAuthenticationHandler jwtAuthenticationHandler;
     @Autowired
-    public SecurityConfig(JwtTokenFilter jwtTokenFilter) {
+    public SecurityConfig(JwtTokenFilter jwtTokenFilter, JwtAuthenticationHandler jwtAuthenticationHandler) {
         this.jwtTokenFilter = jwtTokenFilter;
+        this.jwtAuthenticationHandler = jwtAuthenticationHandler;
     }
 
     //    내가 만든 클래스와 객체는 @Component, 외부 클래스(라이브러리)를 활용한 객체는 @Component
@@ -34,6 +38,7 @@ public class SecurityConfig {
                 .sessionManagement(a->a.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 //                token을 검증하고, Authentication객체 생성
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(e->e.authenticationEntryPoint(jwtAuthenticationHandler))
 //                지정한 특정url을 제외한 모든 요청에 대해서 authenticated(인증처리)하겠다라는 의미
 //                .authorizeHttpRequests(a->a.requestMatchers(
 //                        "/author/create", "/author/login").permitAll().anyRequest().authenticated())
