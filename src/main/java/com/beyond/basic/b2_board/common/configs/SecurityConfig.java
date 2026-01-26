@@ -12,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -41,6 +42,7 @@ public class SecurityConfig {
 //                token을 검증하고, Authentication객체 생성
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(e->e.authenticationEntryPoint(jwtAuthenticationHandler))
+
 //                지정한 특정url을 제외한 모든 요청에 대해서 authenticated(인증처리)하겠다라는 의미
 //                .authorizeHttpRequests(a->a.requestMatchers(
 //                        "/author/create", "/author/login").permitAll().anyRequest().authenticated())
