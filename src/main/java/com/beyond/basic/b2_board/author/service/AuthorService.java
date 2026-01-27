@@ -6,6 +6,7 @@ import com.beyond.basic.b2_board.post.domain.Post;
 import com.beyond.basic.b2_board.post.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -96,5 +97,19 @@ public class AuthorService {
             throw new IllegalArgumentException("이메일또는 비밀번호가 일치하지 않습니다.");
         }
         return opt_author.get();
+    }
+//    @Transactional(readOnly=true)
+//    public AuthorDetailDto myinfo(){
+//        Author author = authorRepository.findByEmail(email).orElseThrow(()->new NoSuchElementException("entity is not found"));
+//        return AuthorDetailDto.fromEntity(author);
+//    }
+
+    @Transactional(readOnly=true)
+    public AuthorDetailDto myinfo(){
+        String email = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();//외우구리
+        Optional<Author> optAuthor = authorRepository.findByEmail(email);
+        Author author = optAuthor.orElseThrow(()->new EntityNotFoundException("entity is not found"));
+        AuthorDetailDto dto = AuthorDetailDto.fromEntity(author);
+        return dto;
     }
 }

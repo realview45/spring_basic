@@ -23,7 +23,8 @@ public class JwtTokenFilter extends GenericFilter {
     private String st_secret_key;
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+            throws IOException, ServletException {
         try{
             HttpServletRequest req = (HttpServletRequest) servletRequest;
 //        관례적으로 Bearer라는 문자열을 토큰에 붙여서 전송
@@ -47,10 +48,10 @@ public class JwtTokenFilter extends GenericFilter {
 //      claims를 기반으로 authentication 객체생성
 //        권한의 경우 다수의 권한을 가질수 있으므로 일반적으로 List로 설계
             List<GrantedAuthority> authorities = new ArrayList<>();
-//        권한을 세팅할 때 권한은 ROLE_라는 키워드를 붙임으로서 추후 권한체크 어노테이션 사용가능
+//        권한을 세팅할 때 권한은 ROLE_라는 키워드를 붙임으로서 추후 권한체크 @PreAuthorize어노테이션 사용가능
             authorities.add(new SimpleGrantedAuthority("ROLE_" + claims.get("role")));
 
-//        1)principal : email 2)credentials : 토큰 3)authorities : 권한묶음
+//        1)principal : email 2)credentials : 토큰 객체가 무거워질것 같아서 비워둠 3)authorities : 권한묶음
             Authentication authentication = new UsernamePasswordAuthenticationToken(claims.getSubject(), "", authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }catch(Exception e){

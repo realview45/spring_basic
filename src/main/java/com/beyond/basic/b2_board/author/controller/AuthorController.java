@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -77,6 +79,7 @@ public class AuthorController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> findById(@PathVariable Long id){
         try {
             AuthorDetailDto dto = authorService.findById(id);
@@ -89,6 +92,13 @@ public class AuthorController {
                     .build();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(dto);
         }
+    }
+
+    @GetMapping("/myinfo")          //컨트롤러계층에서사용
+    public ResponseEntity<?> myInfo(@AuthenticationPrincipal String principal){
+        System.out.println(principal);
+        AuthorDetailDto dto = authorService.myinfo();
+        return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 //    아래와 같이 http응답 body를 분기처리한다하더라도 상태코드는 200으로 고정
 //    @GetMapping("/{id}")
