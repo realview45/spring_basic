@@ -26,6 +26,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 //    순수raw : select * from post p inner join author a on a.id=p.author_id;
     @Query("select p from Post p inner join fetch p.author")
     List<Post> findAllFetchInnerJoin();
-
+//    Page객체 안에는 content(List<Post>), totalPages, totalElement등의 정보 포함
     Page<Post> findAll(Pageable pageable);
 }

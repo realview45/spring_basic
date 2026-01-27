@@ -49,6 +49,7 @@ public class PostService {
 //        List<Post> postList = postRepository.findAllByDelYn("N");
 //        List<Post> postList=postRepository.findAllInnerJoin();
         Page<Post> postList = postRepository.findAll(pageable);
+//        Page객체안에 Entity->Dto로 쉽게 변환할수있는 편의제공
         return postList.map(p->PostListDto.fromEntity(p));
 //        return postList.stream().map(p->
 //                PostListDto.fromEntity(p,authorRepository
