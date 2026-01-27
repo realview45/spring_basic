@@ -46,7 +46,7 @@ public class PostService {
     public List<PostListDto> findAll() {
 //        List<Post> postList = postRepository.findAllByDelYn("N");
         List<PostListDto> dtoList = new ArrayList<>();
-        List<Post> postList=postRepository.findAllFetchInnerJoin();
+        List<Post> postList=postRepository.findAllInnerJoin();
         for(Post p : postList){
             dtoList.add(PostListDto.fromEntity(p));
          }
