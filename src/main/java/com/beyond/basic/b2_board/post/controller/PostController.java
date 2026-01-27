@@ -36,6 +36,7 @@ public class PostController {
 
     @GetMapping("/posts")//Pageable객체를 받겠다 RequestParam과 비슷
     public Page<PostListDto> findAll(Pageable pageable){
+        //페이지 처리를 위한 데이터 요청 형식 : localhost:8080/posts?page=0&size=5&sort=title,asc
         return postService.findAll(pageable);
     }
 //    @GetMapping("/posts")
