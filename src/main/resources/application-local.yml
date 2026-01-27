@@ -50,4 +50,4 @@ jwt:
 
 logging:
   level:
-    root: debug
+    root: error

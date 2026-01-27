@@ -1,10 +1,12 @@
 package com.beyond.basic.b2_board.common.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+//logback 객체를 만드는 방법2.
+@Slf4j
 @RestController
 public class LogController {
 //    logback 객체를 만드는 방법1.
@@ -19,9 +21,21 @@ public class LogController {
 //        가장 많이 사용되는 로그라이브러리 : logback
         logger.trace("trace로그입니다.");
         logger.debug("debug로그입니다.");
-        logger.info("info로그입니다.");
+        logger.info("info로그입니다.");//개발, 운영 가끔 로그많이 필요할때 bebug구리
         logger.error("error로그입니다.");
         logger.info("hello world");
+
+////        Slf4j어노테이션을 선언시, log라는 변수로 객체 사용가능
+//        log.debug("slf4j테스트");
+//        log.info("slf4j테스트");
+        try {
+            log.info("에러테스트 시작");
+            throw new IllegalArgumentException("에러테스트");
+        }catch(IllegalArgumentException e){
+//            e.printStackTrace(); //성능문제로 logback쓰는게 더 좋음.
+            log.error("에러메시지 : ", e);
+
+        }
 
         return "OK";
     }
