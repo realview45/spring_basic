@@ -45,15 +45,11 @@ public class PostService {
         return postDetailDto;
     }
     @Transactional(readOnly=true)//@ModelAttribute?
-    public List<PostListDto> findAll(Pageable pageable) {
+    public Page<PostListDto> findAll(Pageable pageable) {
 //        List<Post> postList = postRepository.findAllByDelYn("N");
 //        List<Post> postList=postRepository.findAllInnerJoin();
         Page<Post> postList = postRepository.findAll(pageable);
-        List<PostListDto> dtoList = new ArrayList<>();
-        for(Post p : postList){
-            dtoList.add(PostListDto.fromEntity(p));
-         }
-        return dtoList;
+        return postList.map(p->PostListDto.fromEntity(p));
 //        return postList.stream().map(p->
 //                PostListDto.fromEntity(p,authorRepository
 //                        .findById(p.getAuthorId()).orElseThrow(()-> new EntityNotFoundException("entity not found"))))

@@ -6,6 +6,7 @@ import com.beyond.basic.b2_board.post.service.PostService;
 import jakarta.validation.Valid;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class PostController {
     }
 
     @GetMapping("/posts")//Pageable객체를 받겠다 RequestParam과 비슷
-    public List<PostListDto> findAll(Pageable pageable){
+    public Page<PostListDto> findAll(Pageable pageable){
         return postService.findAll(pageable);
     }
 //    @GetMapping("/posts")
