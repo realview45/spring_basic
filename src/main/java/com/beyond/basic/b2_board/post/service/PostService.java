@@ -58,7 +58,24 @@ public class PostService {
         Specification<Post> specification = new Specification<Post>() {
             @Override
             public Predicate toPredicate(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                return null;
+                List<Predicate> predicateList = new ArrayList<>();
+//                root : 엔티티의 컬럼명을 접근하기 위한 객체, criteriaBuilder: 쿼리를 생성하기 위한 객체
+                if(searchDto.getTitle()!=null){
+                    predicateList.add(criteriaBuilder.like(root.get("title"), "%"+searchDto.getTitle()+"%"));
+                }
+                if(searchDto.getCategory()!=null){
+                    predicateList.add(criteriaBuilder.equal(root.get("category"), searchDto.getCategory()));
+                }
+                if(searchDto.getContents()!=null){
+                    predicateList.add(criteriaBuilder.like(root.get("contents"), "%"+searchDto.getContents()+"%"));
+                }
+                Predicate[] predicateArr = new Predicate[predicateList.size()];
+                for(int i=0;i<predicateArr.length;i++){
+                    predicateArr[i] = predicateList.get(i);
+                }
+//                Predicate에는 검색조건들이 담길 것이고, 이 Predicate list를 한줄의 predicate로 조립.
+                Predicate predicate = criteriaBuilder.and(predicateArr);
+                return predicate;
             }
         };
         Page<Post> postList = postRepository.findAll(specification, pageable);

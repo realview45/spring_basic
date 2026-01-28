@@ -45,7 +45,6 @@ public class PostController {
             @ModelAttribute PostSearchDto searchDto){
         //페이지 처리를 위한 데이터 요청 형식 : localhost:8080/posts?page=0&size=5&sort=title,asc
         //검색 + 페이지 처리를 위한 데이터 요청 형식 : localhost:8080/posts?page=0&size=5&sort=title,asc&title=hello&category=경제
-        System.out.println(searchDto);
         log.info("dto : {}", searchDto);
         return postService.findAll(pageable, searchDto);
     }
