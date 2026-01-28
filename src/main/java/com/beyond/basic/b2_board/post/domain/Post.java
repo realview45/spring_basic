@@ -42,4 +42,7 @@ public class Post extends BaseTimeEntity {
     public void deleteDelYn(){
         delYn = "Y";
     }
+    public void updateAppointment(String appointment) {
+        this.appointment =appointment;
+    }
 }

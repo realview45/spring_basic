@@ -16,6 +16,7 @@ import java.util.Optional;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllByDelYn(String delYn);
+    List<Post> findAllByAppointment(String appointment);
 //    List<Post> findAllByAuthorIdAndDelYn(Long authorId, String delYn);
 //    jpql을 활용한 일반 inner join : N+1문제 해결X
 //    jqpl과 raw쿼리의 차이
