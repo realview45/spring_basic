@@ -13,5 +13,4 @@ public class PostSearchDto {
     private String title;
     private String contents;
     private String category;
-
 }

@@ -59,8 +59,9 @@ public class PostService {
             @Override
             public Predicate toPredicate(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicateList = new ArrayList<>();
+                predicateList.add(criteriaBuilder.equal(root.get("delYn"), "N"));
 //                root : 엔티티의 컬럼명을 접근하기 위한 객체, criteriaBuilder: 쿼리를 생성하기 위한 객체
-                if(searchDto.getTitle()!=null){
+                if(searchDto.getTitle()!= null){
                     predicateList.add(criteriaBuilder.like(root.get("title"), "%"+searchDto.getTitle()+"%"));
                 }
                 if(searchDto.getCategory()!=null){
