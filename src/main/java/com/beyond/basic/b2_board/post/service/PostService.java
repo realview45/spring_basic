@@ -6,11 +6,17 @@ import com.beyond.basic.b2_board.post.domain.Post;
 import com.beyond.basic.b2_board.post.dtos.PostCreateDto;
 import com.beyond.basic.b2_board.post.dtos.PostDetailDto;
 import com.beyond.basic.b2_board.post.dtos.PostListDto;
+import com.beyond.basic.b2_board.post.dtos.PostSearchDto;
 import com.beyond.basic.b2_board.post.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,10 +51,17 @@ public class PostService {
         return postDetailDto;
     }
     @Transactional(readOnly=true)//@ModelAttribute?
-    public Page<PostListDto> findAll(Pageable pageable) {
+    public Page<PostListDto> findAll(Pageable pageable, PostSearchDto searchDto) {
 //        List<Post> postList = postRepository.findAllByDelYn("N");
 //        List<Post> postList=postRepository.findAllInnerJoin();
-        Page<Post> postList = postRepository.findAll(pageable);
+//        검색을 위한 Specification객체 조립
+        Specification<Post> specification = new Specification<Post>() {
+            @Override
+            public Predicate toPredicate(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+                return null;
+            }
+        };
+        Page<Post> postList = postRepository.findAll(specification, pageable);
 //        Page객체안에 Entity->Dto로 쉽게 변환할수있는 편의제공
         return postList.map(p->PostListDto.fromEntity(p));
 //        return postList.stream().map(p->
