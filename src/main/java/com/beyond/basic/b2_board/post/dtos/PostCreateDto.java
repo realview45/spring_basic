@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -15,8 +17,13 @@ public class PostCreateDto {
     private String title;
     private String contents;
     private String category;
-    @NotBlank
+//    @NotBlank
 //    private String authorEmail;
+    @Builder.Default
+    private String appointment= "N";
+    @Builder.Default
+    private LocalDateTime appointmentTime=LocalDateTime.now();
+
     public Post toEntity(Author author){
         return Post.builder()
                 .title(this.title)
@@ -24,6 +31,8 @@ public class PostCreateDto {
                 .category(this.category)
                 .author(author)
 //                .delYn("N")
+                .appointment(this.appointment)
+                .appointmentTIme(this.appointmentTime)
                 .build();
     }
 }
