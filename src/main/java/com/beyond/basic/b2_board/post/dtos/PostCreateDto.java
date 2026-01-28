@@ -17,6 +17,7 @@ public class PostCreateDto {
     private String title;
     private String contents;
     private String category;
+
 //    @NotBlank
 //    private String authorEmail;
     @Builder.Default
