@@ -35,17 +35,17 @@ public class PostScheduler {
 //    0 0 11 * * * : 매월 매일 11시 0분 0초에
 //    0 0/1 * * * * : 매월 매일 매시간 1분마다의 의미
 
-    @Scheduled(cron = "0 0/1 * * * *")
-    public void postSchedule(){
-        log.info("====스케줄러 시작=====");
-        List<Post> list  = postRepository.findAllByAppointment("Y");
-//        post전체 중 Y인 건을 조회 후, 그중 현재시간보다 이전인 데이터는 N으로 변경
-        for(Post p : list){
-            LocalDateTime now = LocalDateTime.now();
-            if(p.getAppointmentTIme().isBefore(now)){
-                p.updateAppointment("N");
-            }
-        }
-        log.info("====스케줄러 끝=======");
-    }
+//    @Scheduled(cron = "0 0/1 * * * *")
+//    public void postSchedule(){
+//        log.info("====스케줄러 시작=====");
+//        List<Post> list  = postRepository.findAllByAppointment("Y");
+////        post전체 중 Y인 건을 조회 후, 그중 현재시간보다 이전인 데이터는 N으로 변경
+//        for(Post p : list){
+//            LocalDateTime now = LocalDateTime.now();
+//            if(p.getAppointmentTIme().isBefore(now)){
+//                p.updateAppointment("N");
+//            }
+//        }
+//        log.info("====스케줄러 끝=======");
+//    }
 }

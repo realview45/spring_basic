@@ -16,8 +16,8 @@ public class Address {
     private String city;
     private String street;
     private String zipCode;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id", unique = true,
-            foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT), nullable = false)//fk에대한 옵션
-    private Author author;
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "author_id", unique = true,
+//            foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT), nullable = false)//fk에대한 옵션
+//    private Author author;
 }
