@@ -5,6 +5,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 //Aspect : aop코드임을 명시
 @Aspect
@@ -23,6 +24,7 @@ public class AopLogService {
     public Object controllerLogger(ProceedingJoinPoint joinPoint){
 //        joinpoint 이전
         log.info("aop start");
+        log.info("요청자 : "  + SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         log.info("요청 메서드명 : " + joinPoint.getSignature().getName());
 
         //logback 활용 log 파일분리구리
