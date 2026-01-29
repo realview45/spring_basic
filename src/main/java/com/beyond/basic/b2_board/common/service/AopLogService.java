@@ -35,7 +35,7 @@ public class AopLogService {
         }
 
 //        joinpoint 이후
-        System.out.println("aop end");
+        log.info("aop end");
 
         return object;
     }
